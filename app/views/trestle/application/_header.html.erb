@@ -1,0 +1,48 @@
+<div class="btn-toolbar primary-toolbar">
+  <% if @count -%>
+    <p>Listing  <%=@count%> Records</p>
+  <%end%>
+</div>
+<header class="content-header">
+  <div class="content-header-title">
+    <h1>
+    <% if params[:controller]  == "admin_payouts_admin/admin" && params[:action] == "index" %>
+      Payouts
+    <% else %>
+      <%= content_for(:title) %>
+    <% end %>
+    </h1>
+    <% unless local_assigns.fetch(:hide_breadcrumbs, false) %>
+    <ol class="breadcrumb">
+      <% breadcrumbs.each do |breadcrumb| %>
+        <li class="breadcrumb-item<% if breadcrumb == breadcrumbs.last %> active<% end %>">
+        <% if breadcrumb.label.eql?("Admin Payouts") %>
+          <%= link_to "Payouts", breadcrumb.path %>
+        <%else%>
+          <%= link_to breadcrumb.label, breadcrumb.path %>
+        <%end%>
+        </li>
+      <% end %>
+    </ol>
+    <% end %>
+  </div>
+  
+  <% if @csv -%>
+    <div class="btn-toolbar primary-toolbar">
+      <%= link_to 'CSV Download', '/csv?format=csv', target: "_blank", class: "", icon: "fa fa-download" %>
+    </div>
+  <%end%>
+  <% unless @dont_display_new_link -%>
+    <div class="content-header-toolbars">
+      <div class="btn-toolbar primary-toolbar" role="toolbar">
+        <%= render_toolbar(toolbar(:primary)) %>
+        <%= deprecated_toolbar(:primary) %>
+      </div>
+
+      <div class="btn-toolbar secondary-toolbar" role="toolbar">
+        <%= render_toolbar(toolbar(:secondary)) %>
+        <%= deprecated_toolbar(:secondary) %>
+      </div>
+    </div>
+  <% end %>
+</header>

@@ -1,0 +1,52 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  Bank Details
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/admin_payouts">Admin Payouts / Bank Details</a>
+                  </li>
+               </ol>
+            </div>
+         </header>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Name</th>
+                              <th class="">Bank Name</th>
+                              <th class="">Routing Number</th>
+                              <th class="">Account Number</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                        <% @bank_accounts = @bank_accounts.page(params[:page]).per(15) %>
+                        <% @bank_accounts.each do|account| %>
+                           <tr>
+                              <td class=""><%= account.name %></td>
+                              <td class=""><%= account.bank_name %></td>
+                              <td class=""><%= account.routing_number %></td>
+                              <td class=""><%= account.account_number %></td>
+                           </tr>
+                        <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>

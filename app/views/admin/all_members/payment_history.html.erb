@@ -1,0 +1,217 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+      <div class="btn-toolbar primary-toolbar">
+      <p>Listing  <%=@count%> Records</p>
+      </div>
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  All Members
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/all_members">Users / Payments </a>
+                  </li>
+               </ol>
+            </div>
+            <div class="btn-toolbar primary-toolbar">
+            <%= link_to 'CSV Download', "/payment_csv?user_id=#{params[:user_id]}&name=#{params[:name]}&from_date=#{params[:from_date]}&to_date=#{params[:to_date]}&format=csv", target: "_blank", class: "", icon: "fa fa-download" %>
+          </div>
+         </header>
+      
+         <% if @user.trainer? %>
+          <div class="">
+            <span class="user-filter">
+              <%= link_to "All", "/admin/all_members/payment_history?user_id=#{@user.id}", class: "btn btn-sm btn btn-primary" %>
+              <%= link_to "Payment Made", "/admin/all_members/payment_history?user_id=#{@user.id}&type=paid", class: "btn btn-sm btn btn-primary" %>
+              <%= link_to "Commission Earned", "/admin/all_members/payment_history?user_id=#{@user.id}&type=earned", class: "btn btn-sm btn btn-primary" %>
+            </span>
+          </div>
+        <% end %>
+         <div class="date-range-filter">
+          <span>Name</span>
+          <input type="text" id="filter-name" value="<%= params[:name] %>">
+          <span>From Date</span>
+          <input type="text" id="datepicker1" value="<%= params[:from_date] %>">
+          <span>To Date</span>
+          <input type="text" id="datepicker2" value="<%= params[:to_date]%>">
+          <input type="submit", class="search-btn">
+        </div>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">User</th>
+                              <%if @user.client?%>
+                              <th class="custom-width">Trainer</th>
+                              <%end%>
+                              <th class="custom-width">User Type</th>
+                              <th class="custom-width">Amount Paid</th>
+                              <th class="custom-width">Plan</th>
+                              <% if @user.client? %>
+                                <th class="custom-width">Session_count</th>
+                              <%end%>
+                              <th class="custom-width">Payment Date</th>
+                        </thead>
+                        <tbody>
+                        <% @payments = @payments.page(params[:page]).per(15) %>
+                          <% @payments.each do|payment| %>
+                            <tr>
+                                <td class="">
+                                  <%= payment.id %>
+                                </td>
+                                <td class="custom-width">
+                                <% if payment.client_id.present? %>
+                                    <%= payment.client.try(:full_name)  %><span class="email-span"><%= "<#{payment.client.try(:email)}>" %></span>
+                                <%else%>
+                                <%= @user.try(:full_name)  %><span class="email-span"><%= "<#{@user.try(:email)}>" %></span>
+
+                                <%end%>
+                                    </td>
+                                <% if @user.client? %>
+                                    <td class="">
+                                        <%= @user.trainer.try(:full_name)  %><span class="email-span"><%= "<#{@user.trainer.try(:email)}>" %></span>
+                                    </td>
+                                <%end%>
+                                <td class="">
+                                <% if payment.client_id.present? %>
+                                  <%= payment.client.user_type %>
+                                <%else%>
+                                  <%= @user.user_type %>
+                                <%end%>
+                                </td>
+                                <td class="">
+                                  <%= sprintf("$%2.2f",  payment.try(:amount)) %>
+                                </td>
+                                <td class="">
+                                <%= payment.plan.present? ? (payment.plan == "per_session" ? "Per session" : "Monthly") : (payment.amount == 0.99e2 ? "Monthly" : "Yearly") %>
+
+                                </td>
+                                <% if @user.client? %>
+                                    <td class="">
+                                        <%= payment.try(:session_count) %>
+                                    </td>
+                                <%end%>
+                                <td class="">
+                                    <%= payment.try(:created_at).strftime('%m/%d/%Y') %>
+                                </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+                  <footer class="main-content-footer">
+                    <nav class="pagination-container">
+                      <p><%= page_entries_info(@payments, entry_name: (entry_name if local_assigns.has_key?(:entry_name))) %>
+                      
+                      <%= paginate(@payments, theme: "trestle") %>
+                    </nav>
+                  </footer>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
+<script>
+$( function() {
+  $( "#datepicker1" ).datepicker();
+  $( "#datepicker2" ).datepicker();
+  $(".search-btn").on("click", function(){
+    from_date = $("#datepicker1").val();
+    to_date = $("#datepicker2").val();
+    name = $("#filter-name").val();
+    window.location.href = window.location.href + "&name=" + name + "&from_date=" +  from_date +"&to_date="+ to_date
+  })
+} );
+</script>
+<style>
+.trestle-table td .email-span {
+  display: block;
+  font-size: 12px;
+  line-height: 10px;
+  color: #4d6bb2;
+  display: inline-block;
+  word-break: break-all;
+}
+.custom-width {
+  width: 180px !important;
+  max-width: 180px !important;
+}
+
+.table-container {
+  overflow: visible;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  height: auto;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  margin-left: -202px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>

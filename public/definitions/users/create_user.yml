@@ -1,0 +1,54 @@
+title: User
+type: object
+required:
+  - email
+  - password
+  - user_type
+  - first_name
+  - last_name
+  - birth_day
+  - address
+  - phone_number
+  - sex
+  - goal
+  - weight
+  - height
+properties:
+  email:
+    type: string
+    description: User email
+  password:
+    type: string
+    description: User Password
+  user_type:
+    type: string
+    description: upto 10 digit possible slug or enum
+  first_name:
+    type: string
+    description: User first name
+  last_name:
+    type: string
+    description: User last name
+  birth_day:
+    type: string
+    description: Date of birth
+  address:
+    type: string
+    description: User address
+  phone_number:
+    type: string
+    description: Phone number
+  sex:
+    type: string
+    description: User Gender
+    enum:
+      - m
+      - f
+  goal:
+    description: User objective upto 50 digits
+  weight:
+    type: integer
+    format: int64
+  height:
+    type: integer
+    format: int64

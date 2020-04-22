@@ -1,0 +1,1111 @@
+{
+  "swagger": "2.0",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "BodyFrame - API",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": ""
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "bodyframe.herokuapp.com",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Activity"
+    },
+    {
+      "name": "Message"
+    },
+    {
+      "name": "Notification"
+    },
+    {
+      "name": "Payment",
+      "description": "Payments for App and Trainer"
+    },
+    {
+      "name": "SupportTicket"
+    },
+    {
+      "name": "User",
+      "description": "Operations about users"
+    },
+    {
+      "name": "UserProfile"
+    },
+    {
+      "name": "UserCards"
+    }
+  ],
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  },
+  "paths": {
+    "/Get_Activities": {
+      "post": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "Returns all activities",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetActivity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of activities.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetActivity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Assign_Activity": {
+      "post": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "Assign activity",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AssignActivity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assign activity.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/AssignActivity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Complete_Activity": {
+      "post": {
+        "tags": [
+          "Activity"
+        ],
+        "description": "Complete activity",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CompleteActivity"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Complete activity.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/CompleteActivity"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Messages": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "description": "Returns all messages",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of messages.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetMessage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Send_Message": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "description": "Send Message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send Message.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/SendMessage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Read_Message": {
+      "post": {
+        "tags": [
+          "Message"
+        ],
+        "description": "Read Message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReadMessage"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read Message.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/ReadMessage"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Notifications": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Returns all notifications",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetNotification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of notifications.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetNotification"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Send_Notification": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Send Notification",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendNotification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Send Notification.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/SendNotification"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Read_Notification": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Read Notification",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ReadNotification"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read Notification.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/ReadNotification"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Payment_History": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "Returns all Payment Histories",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetPayment"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of payment histories.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetPayment"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pay_APP": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "Pay APP",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PayAPP"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pay APP.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/PayAPP"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Pay_Trainer": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "description": "Pay Trainer",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PayTrainer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pay Trainer.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/PayTrainer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Support_Ticket": {
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "description": "Returns all Support Tickets",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetSupportTicket"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of support tickets.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/GetSupportTicket"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Update_Support_Ticket": {
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "description": "Update Support Ticket",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateSupportTicket"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Support Ticket.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/UpdateSupportTicket"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Send_Support_Ticket": {
+      "post": {
+        "tags": [
+          "SupportTicket"
+        ],
+        "description": "Send Support Ticket",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendSupportTicket"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pay Trainer.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/SendSupportTicket"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Login User",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login User.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/LoginUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Create_User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Create User",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Create User.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/CreateUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Update_User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Update User",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update User.",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/UpdateUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Profile": {
+      "post": {
+        "tags": [
+          "UserProfile"
+        ],
+        "description": "Get Profile",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Profile",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/GetProfile"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Update_Profile": {
+      "post": {
+        "tags": [
+          "UserProfile"
+        ],
+        "description": "Update Profile",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateProfile"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Profile",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/UpdateProfile"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Set_Card_Information": {
+      "post": {
+        "tags": [
+          "UserCards"
+        ],
+        "description": "Set Card Information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SetCardInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Set Card Information",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/SetCardInformation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Card_Information": {
+      "post": {
+        "tags": [
+          "UserCards"
+        ],
+        "description": "Get Card Information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetCardInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Card Information",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/GetCardInformation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Update_Card_Information": {
+      "post": {
+        "tags": [
+          "UserCards"
+        ],
+        "description": "Update Card Information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateCardInformation"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update Card Information",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/UpdateCardInformation"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Forgot_Password": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Forgot Password",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ForgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Forgot Password",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/ForgotPassword"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Get_Contact_List": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Get Contact List",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GetContactList"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get Contact List",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/GetContactList"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Comp_User": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Comp User",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CompUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Comp User",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/CompUser"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Delete_User_Account": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "description": "Delete User Account",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/DeleteUserAccount"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete User Account",
+            "schema": {
+              "type": "object",
+              "items": {
+                "$ref": "#/definitions/DeleteUserAccount"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "GetActivity": {
+      "$ref": "definitions/activities/get_activities.yml"
+    },
+    "AssignActivity": {
+      "$ref": "definitions/activities/assign_activity.yml"
+    },
+    "CompleteActivity": {
+      "$ref": "definitions/activities/complete_activity.yml"
+    },
+    "GetMessage": {
+      "$ref": "definitions/messages/get_messages.yml"
+    },
+    "SendMessage": {
+      "$ref": "definitions/messages/send_message.yml"
+    },
+    "ReadMessage": {
+      "$ref": "definitions/messages/read_message.yml"
+    },
+    "GetNotification": {
+      "$ref": "definitions/notifications/get_notifications.yml"
+    },
+    "SendNotification": {
+      "$ref": "definitions/notifications/send_notification.yml"
+    },
+    "ReadNotification": {
+      "$ref": "definitions/notifications/read_notification.yml"
+    },
+    "GetPayment": {
+      "$ref": "definitions/payments/get_payments.yml"
+    },
+    "PayAPP": {
+      "$ref": "definitions/payments/pay_app.yml"
+    },
+    "PayTrainer": {
+      "$ref": "definitions/payments/pay_trainer.yml"
+    },
+    "GetSupportTicket": {
+      "$ref": "definitions/support_tickets/get_support_tickets.yml"
+    },
+    "SendSupportTicket": {
+      "$ref": "definitions/support_tickets/send_support_ticket.yml"
+    },
+    "UpdateSupportTicket": {
+      "$ref": "definitions/support_tickets/update_support_ticket.yml"
+    },
+    "LoginUser": {
+      "$ref": "definitions/users/login_user.yml"
+    },
+    "CreateUser": {
+      "$ref": "definitions/users/create_user.yml"
+    },
+    "UpdateUser": {
+      "$ref": "definitions/users/update_user.yml"
+    },
+    "GetProfile": {
+      "$ref": "definitions/users/get_profile.yml"
+    },
+    "UpdateProfile": {
+      "$ref": "definitions/users/update_profile.yml"
+    },
+    "SetCardInformation": {
+      "$ref": "definitions/users/set_card_information.yml"
+    },
+    "GetCardInformation": {
+      "$ref": "definitions/users/get_card_information.yml"
+    },
+    "UpdateCardInformation": {
+      "$ref": "definitions/users/update_card_information.yml"
+    },
+    "ForgotPassword": {
+      "$ref": "definitions/users/forgot_password.yml"
+    },
+    "GetContactList": {
+      "$ref": "definitions/users/get_contact_list.yml"
+    },
+    "CompUser": {
+      "$ref": "definitions/users/comp_user.yml"
+    },
+    "DeleteUserAccount": {
+      "$ref": "definitions/users/delete_user_account.yml"
+    }
+  }
+}

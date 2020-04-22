@@ -1,0 +1,12 @@
+title: Notification
+type: object
+required:
+  - user_id
+  - notification_id
+properties:
+  user_id:
+    type: integer
+    format: int64
+  notification_id:
+    type: integer
+    format: int64

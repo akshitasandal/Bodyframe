@@ -1,0 +1,16 @@
+title: Message
+type: object
+required:
+  - user_id
+  - send_to
+  - message
+properties:
+  user_id:
+    type: integer
+    format: int64
+  send_to:
+    type: integer
+    format: int64
+  message:
+    type: string
+    example: Test Activity Type

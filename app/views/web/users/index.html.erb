@@ -1,0 +1,40 @@
+<body>
+   <div class="app-wrapper">
+      <div class="app-container">
+         <main class="app-main" data-context="/admin/revenue_reporting">
+            <div class="main-content-area">
+               <div class="main-content-container">
+                  <div class="main-content">
+                     <div class="table-container">
+                        <table class="trestle-table">
+                           <thead>
+                              <tr>
+                                 <th class="">Email</th>
+                                 <th class="">Full name</a></th>
+                                 <th class="">Objective</a></th>
+                                 <th class="">Phone</a></th>
+                                 <th class="">User type</a></th>
+                                 <th class="text-center">Created at</a></th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                                <% @users.each do|user|%>
+                                    <tr data-url="/admin/revenue_reporting/43">
+                                        <td class=""><%= user.email %></td>
+                                        <td class=""><%= user.full_name %></td>
+                                        <td class=""><%= user.objective %></td>
+                                        <td class=""><%= user.phone %></td>
+                                        <td class=""><%= user.user_type %></td>
+                                        <td class="text-center"><%= user.created_at %></td>
+                                    </tr>
+                                <%end%>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </main>
+      </div>
+   </div>
+</body>

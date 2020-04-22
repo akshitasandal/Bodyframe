@@ -1,0 +1,12 @@
+title: User
+type: object
+required:
+  - user_id
+  - comp_time
+properties:
+  user_id:
+    type: integer
+    format: int64
+  comp_time:
+    type: string
+    description: Paid Until (DataType Date)

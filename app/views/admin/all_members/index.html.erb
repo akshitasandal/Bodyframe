@@ -1,0 +1,267 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+      <div class="btn-toolbar primary-toolbar">
+      <p>Listing  <%=@count%> Records</p>
+      </div>
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  All Members
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/reports">Users / All Members </a>
+                  </li>
+               </ol>
+            </div>
+       
+            <div class="btn-toolbar primary-toolbar">
+              <%= link_to 'CSV Download', "/admin/all_members/all_members_csv?format=csv", target: "_blank", class: "", icon: "fa fa-download" %>
+            </div>
+         </header>
+          <span class="user-filter">
+            <%= link_to "All", "/admin/all_members", class: "btn btn-sm btn btn-primary" %>
+            <%= link_to "Trainers", "/admin/all_members?type=trainer", class: "btn btn-sm btn btn-primary" %>
+            <%= link_to "Clients", "/admin/all_members?type=client", class: "btn btn-sm btn btn-primary" %>
+          </span>
+          <div class="date-range-filter">
+            <span>Name</span>
+            <input type="text" id="filter-name" value="<%= params[:name] %>">
+            <span>Sort By</span>
+            <select name="sorting" id="search-sort">
+              <%if params[:sort].eql?("id") %>
+                <option value="id" selected>Id</option>
+              <%else%>
+                <option value="id">Id</option>
+              <%end%>
+
+              <%if params[:sort].eql?("full_name") %>
+                <option value="full_name" selected>Username</option>
+              <%else%>
+                <option value="full_name">Username</option>
+              <%end%>
+
+              <%if params[:sort].eql?("email") %>
+                <option value="email" selected>Email</option>
+              <%else%>
+                <option value="email">Email</option>
+              <%end%>
+
+              <%if params[:sort].eql?("user_type") %>
+                <option value="user_type" selected>User Type</option>
+              <%else%>
+                <option value="user_type">User Type</option>
+              <%end%>
+
+              <%if params[:sort].eql?("phone") %>
+                <option value="phone" selected>Phone</option>
+              <%else%>
+                <option value="phone">Phone</option>
+              <%end%>
+
+              <%if params[:sort].eql?("commission") %>
+                <option value="commission" selected>Commission</option>
+              <%else%>
+                <option value="commission">Commission</option>
+              <%end%>
+
+              <%if params[:sort].eql?("last_payment_date") %>
+                <option value="last_payment_date" selected>Last Payment Date</option>
+              <%else%>
+                <option value="last_payment_date">Last Payment Date</option>
+              <%end%>
+
+              <%if params[:sort].eql?("membership_exp_date") %>
+                <option value="membership_exp_date" selected>Membership Expiry</option>
+              <%else%>
+                <option value="membership_exp_date">Membership Expiry</option>
+              <%end%>
+
+            </select>
+            <span>Sort Direction</span>
+            <select name="sorting" id="search-order">
+              <%if params[:order].eql?("asc") %>
+                <option value="asc" selected>Ascending</option>
+              <%else%>
+                <option value="asc">Ascending</option>
+              <%end%> 
+              
+              <%if params[:order].eql?("desc") %>
+                <option value="desc" selected>Descending</option>
+              <%else%>
+                <option value="desc">Descending</option>
+              <%end%>
+            </select>
+            <input type="submit", class="search-btn">
+          </div>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">Username</th>
+                              <th class="custom-width">Email</th>
+                              <th class="custom-width">User Type</th>
+                              <th class="custom-width">Phone</th>
+                              <th class="">Amount Paid</th>
+                              <th class="custom-width">BodyFrame Commission</th>
+                              <th class="">Last Payment Date</th>
+                              <% if params[:type]!="client"%>
+                                <th class="">Membership Exp Date</th>
+                              <%end%>
+                        </thead>
+                        <tbody>
+                        <% @users = @users.page(params[:page]).per(15) %>
+                          <% @users.each do|user| %>
+                              <tr data-link="all_members/payment_history?user_id=<%=user.id %>" >
+                                  <td class="">
+                                    <%= user.id %>
+                                  </td>
+                                  <td class="custom-width">
+                                      <%= user.try(:full_name) %>
+                                  </td>
+                                  <td class="custom-width">
+                                    <%= user.try(:email) %>
+                                  </td>
+                                  <td class="custom-width">
+                                    <%= user.user_type %>
+                                  </td>
+                                  <td class="">
+                                    <%= user.phone %>
+                                  </td>
+                                  <td class="">
+                                    <%= user.trainer? ? sprintf("$%2.2f", PaymentHistory.where(user_id: user.id, client_id: nil).sum(:amount)) : sprintf("$%2.2f", PaymentHistory.where(client_id: user.id).sum(:amount)) %>
+                                  </td>
+                                  <td class="">
+                                        <%= sprintf("$%2.2f", user.payment_histories.sum(:reward_total)) %>
+                                    </td>
+                                  <td class="">
+                                      <% date = user.trainer? ? user.payment_histories.where(client_id: nil).last.try(:created_at) : PaymentHistory.where(client_id: user.id).last.try(:created_at)%>
+                                      <%= date.present? ? date.strftime('%m/%d/%Y') : "-" %>
+                                  </td>
+                                  <% if params[:type]!="client"%>
+                                    <td class="">
+                                        <%if user.trainer? %>
+                                          <% payment = user.payment_histories.where(client_id: nil).last %>
+                                          <%= payment.present? && payment.amount == 0.997e3 ? (payment.try(:created_at) + 1.year).strftime('%m/%d/%Y') : ( payment.present? && payment.amount == 0.99e2 ? (payment.created_at + 1.month).strftime('%m/%d/%Y') : (user.created_at + 14.days).strftime('%m/%d/%Y'))  %>
+                                        <%else%>
+                                          <% payment = user.payment_histories.where(client_id: user.id).last %>
+                                          <%= payment.present? && payment.amount != per_session ? (payment.try(:created_at) + 1.month).strftime('%m/%d/%Y') : '' %>
+                                        <%end%>
+                                    </td>
+                                  <%end%>
+                              </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+                  <footer class="main-content-footer">
+                    <nav class="pagination-container">
+                      <p><%= page_entries_info(@users, entry_name: (entry_name if local_assigns.has_key?(:entry_name))) %>
+                      
+                      <%= paginate(@users, theme: "trestle") %>
+                    </nav>
+                  </footer>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
+<script>
+$( function() {
+  $("tr[data-link]").click(function() {
+    window.location = $(this).data("link")
+  })
+  $(".search-btn").on("click", function(){
+    name = $("#filter-name").val();
+    order = $("#search-order").val();
+    sort = $("#search-sort").val();
+    window.location.href = "/admin/all_members?name=" + name + "&sort=" + sort + "&order=" + order
+  })
+} );
+</script>
+<style>
+.trestle-table td .email-span {
+  display: block;
+  font-size: 12px;
+  line-height: 10px;
+  color: #4d6bb2;
+  display: inline-block;
+  word-break: break-all;
+}
+.custom-width {
+  width: 180px !important;
+  max-width: 180px !important;
+}
+
+.table-container {
+  overflow: visible;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  height: auto;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  margin-left: -202px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>

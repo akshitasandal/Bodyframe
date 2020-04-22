@@ -1,0 +1,19 @@
+title: SupportTicket
+type: object
+required:
+  - user_id
+  - ticket_id
+  - status
+properties:
+  user_id:
+    type: integer
+    format: int64
+  ticket_id:
+    type: integer
+    format: int64
+  status:
+    type: string
+    description: Ticket Status
+    enum:
+      - OPEN
+      - CLOSED

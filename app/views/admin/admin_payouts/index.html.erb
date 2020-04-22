@@ -1,0 +1,204 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+      <div class="btn-toolbar primary-toolbar">
+      <p>Listing  <%=@count%> Records</p>
+      </div>
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  Trainers
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/reports">Users / Trainers </a>
+                  </li>
+               </ol>
+            </div>
+         </header>
+        <div class="header-filters">
+          <span class="user-filter">
+            <%= link_to "All", "/admin/admin_payouts", class: "btn btn-sm btn btn-primary" %>
+            <%= link_to "Pending", "/admin/admin_payouts?type=pending", class: "btn btn-sm btn btn-primary" %>
+            <%= link_to "Approved", "/admin/admin_payouts?type=approved", class: "btn btn-sm btn btn-primary" %>
+            <%= link_to "Declined", "/admin/admin_payouts?type=declined", class: "btn btn-sm btn btn-primary" %>
+          </span>
+          <div class="date-range-filter">
+            <span>Name</span>
+            <input type="text" id="filter-name" value="<%= params[:name] %>">
+            <span>From Date</span>
+            <input type="text" id="datepicker1" value="<%= params[:from_date] %>">
+            <span>To Date</span>
+            <input type="text" id="datepicker2" value="<%= params[:to_date]%>">
+            <input type="submit", class="search-btn">
+          </div>
+        </div>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">Full Name</th>
+                              <th class="">Phone</th>
+                              <th class="">Amount Requested</th>
+                              <th class="">Status</th>
+                              <th class="">Created At</th>
+                              <th class="">Date Paid</th>
+                              <th class="">Actions</th>
+                        </thead>
+                        <tbody>
+                        <% @payouts = @payouts.page(params[:page]).per(15) %>
+                          <% @payouts.each do|admin_payout| %>
+                            <tr>
+                                <td class="">
+                                  <%= admin_payout.user.id %>
+                                </td>
+                                <td class="custom-width">
+                                    <%=  admin_payout.user.try(:full_name) %><span class="email-span"><%= "<#{ admin_payout.user.email}>" %></span>
+                                </td>
+                                <td class="">
+                                  <%= admin_payout.user.phone %>
+                                </td>
+                                <td class="">
+                                  <%= sprintf("$%2.2f", admin_payout.amount_requested) %>
+                                </td>
+                                <td class="">
+                                  <%= admin_payout.payment == "requested" ? "pending" : admin_payout.payment %>
+                                </td>
+                                <td class="">
+                                    <%= admin_payout.created_at.strftime('%m/%d/%Y') %>
+                                 </td>
+                                 <td>
+                                <td class="">
+                                  <%= admin_payout.approved? ? admin_payout.updated_at.strftime('%m/%d/%Y') : '-' %>
+                                </td>
+                                 </td>
+                                <td class="actions">
+                                    <%= link_to "Trainer", "/admin/admin_payouts/#{admin_payout.id}/trainer_info", class: "btn btn-sm btn-primary" %>
+                                    <%= link_to "Payments", "/admin/admin_payouts/#{admin_payout.id}/payment_info", class: "btn btn-sm btn-primary" %>
+                                    <%= link_to "Bank Info", "/admin/admin_payouts/#{admin_payout.id}/bank_info", class: "btn btn-sm btn-primary" %>
+                                    <% if admin_payout.requested?%>
+                                      <%= link_to "Approve", "/approve/#{admin_payout.id}", class: "btn btn-sm btn-primary" %>
+                                    <% elsif admin_payout.approved? %>
+                                        <%= link_to "Approved", "/decline/#{admin_payout.id}", class: "btn btn-sm green-btn disabled"%>
+                                    <% end %>
+                              </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+                  <footer class="main-content-footer">
+                    <nav class="pagination-container">
+                      <p><%= page_entries_info(@payouts, entry_name: (entry_name if local_assigns.has_key?(:entry_name))) %>
+                      
+                      <%= paginate(@payouts, theme: "trestle") %>
+                    </nav>
+                  </footer>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
+<script>
+$( function() {
+  $( "#datepicker1" ).datepicker();
+  $( "#datepicker2" ).datepicker();
+
+  $(".search-btn").on("click", function(){
+    from_date = $("#datepicker1").val();
+    to_date = $("#datepicker2").val();
+    name = $("#filter-name").val();
+    window.location.href = "/admin/admin_payouts?name=" + name + "&from_date=" +  from_date +"&to_date="+ to_date
+  })
+} );
+</script>
+<style>
+.trestle-table td .email-span {
+  display: block;
+  font-size: 12px;
+  line-height: 10px;
+  color: #4d6bb2;
+  display: inline-block;
+  word-break: break-all;
+}
+.custom-width {
+  width: 180px !important;
+  max-width: 180px !important;
+}
+
+.table-container {
+  overflow: visible;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  height: auto;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  margin-left: -202px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;  <script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+  </script>
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>

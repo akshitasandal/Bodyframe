@@ -1,0 +1,12 @@
+title: Message
+type: object
+required:
+  - user_id
+  - messager
+properties:
+  user_id:
+    type: integer
+    format: int64
+  messager:
+    type: integer
+    format: int64

@@ -1,0 +1,54 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  Payment Information
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/admin_payouts">Admin Payouts / Payment Information</a>
+                  </li>
+               </ol>
+            </div>
+         </header>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Email</th>
+                              <th class="">Date</th>
+                              <th class="">Client/Trainer</th>
+                              <th class="">Client/Trainer Paid</th>
+                              <th class="">BodyFrame Commission</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                        <% @payments =  @payments.order(created_at: :desc).page(params[:page]) %>
+                        <% @payments.each do|payment| %>
+                           <tr>
+                              <td class=""><%= payment.user.email %></td>
+                              <td class=""><%= payment.created_at.strftime('%m/%d/%Y') %></td>
+                              <td class=""><%= payment.client.try(:email) %></td>
+                              <td class=""><%= sprintf("$%2.2f", payment.amount) %></td>
+                              <td class=""><%= sprintf("$%2.2f", payment.try(:reward_total))%></td>
+                           </tr>
+                        <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>

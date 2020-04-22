@@ -1,0 +1,12 @@
+title: Activity
+type: object
+required:
+  - activity_id
+  - assignee
+properties:
+  activity_id:
+    type: integer
+    format: int64
+  assignee:
+    type: integer
+    format: int64

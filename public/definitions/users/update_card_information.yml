@@ -1,0 +1,28 @@
+title: UserCardInformation
+type: object
+required:
+  - user_id
+  - first_name
+  - last_name
+  - card_number
+  - expiration
+  - CVV
+properties:
+  user_id:
+    type: integer
+    format: int64
+  first_name:
+    type: string
+    description: User First Name
+  last_name:
+    type: string
+    description: User Last Name
+  card_number:
+    type: string
+    description: Credit Card Number
+  expiration:
+    type: string
+    description: Credit Card Expiration Date
+  CVV:
+    type: string
+    description: 3-4 digit card CVV

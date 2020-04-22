@@ -1,0 +1,24 @@
+title: PayApp
+type: object
+required:
+  - email
+  - stripeToken
+  - amount
+  - payer
+  - memo
+properties:
+  email:
+    type: string
+    description: User email
+  stripeToken:
+    type: string
+    description: Received Token from Stripe
+  amount:
+    type: integer
+    format: int64
+  payer:
+    type: string
+    desciption: Payer Name upto 50 chars
+  memo:
+    type: string
+    description: Memo

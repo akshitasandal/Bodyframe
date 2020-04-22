@@ -1,0 +1,63 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">Full Name</th>
+                              <th class="custom-width">User Type</th>
+                              <th class="">Phone</th>
+                              <th class="">Sign Up Date</th>
+                              <th class="">Amount Paid</th>
+                              <th class="">Total Amount Received</th>
+                        </thead>
+                        <tbody>
+                        <% @trainers = @trainers.page(params[:page]).per(15) %>
+                          <% @trainers.each do|user| %>
+                            <tr>
+                                <td class="">
+                                  <%= user.id %>
+                                </td>
+                                <td class="custom-width">
+                                    <%= user.try(:full_name) %><span class="email-span"><%= "<#{user.try(:email)}>" %></span>
+                                </td>
+                                <td class="">
+                                  <%= user.user_type %>
+                                </td>
+                                <td class="">
+                                  <%= user.phone %>
+                                </td>
+                                <td class="">
+                                  <%= user.created_at.strftime('%m/%d/%Y') %>
+                                </td>
+                                <td class="">
+                                  <%= sprintf("$%2.2f", PaymentHistory.where(user_id: user.id, client_id: nil).sum(:amount)) %>
+                                </td>
+                                <td class="">
+                                    <% payment = PaymentHistory.where(user_id: user.id).where.not(client_id: nil) %>
+                                    <% if params[:from_date].present? && params[:to_date].present? %>
+                                      <%= sprintf("$%2.2f", payment.where('created_at > ?', params[:from_date]).where('created_at < ?', params[:to_date]).sum(:amount)) %>
+                                    <% elsif params[:to_date].present? %>
+                                      <%= sprintf("$%2.2f", payment.where('created_at < ?', params[:to_date]).sum(:amount)) %>
+                                    <% elsif params[:from_date].present? %>
+                                      <%= sprintf("$%2.2f", payment.where('created_at > ?', params[:from_date]).sum(:amount)) %>
+                                    <%else%>
+                                        <%=sprintf("$%2.2f",  payment.sum(:amount)) %>
+                                    <% end %>
+                              </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>

@@ -1,0 +1,2 @@
+module Web::PaymentHistoriesHelper
+end

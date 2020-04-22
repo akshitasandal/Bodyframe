@@ -1,0 +1,69 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">User</th>
+                              <%if @user.client?%>
+                              <th class="custom-width">Trainer</th>
+                              <%end%>
+                              <th class="custom-width">User Type</th>
+                              <th class="custom-width">Amount Paid</th>
+                              <th class="custom-width">Plan</th>
+                              <% if @user.client? %>
+                                <th class="custom-width">Session_count</th>
+                              <%end%>
+                              <th class="custom-width">Payment Date</th>
+                        </thead>
+                        <tbody>
+                        <% @payments = @payments.page(params[:page]).per(15) %>
+                          <% @payments.each do|payment| %>
+                            <tr>
+                                <td class="">
+                                  <%= payment.id %>
+                                </td>
+                                <td class="custom-width">
+                                    <%= @user.try(:full_name)  %><span class="email-span"><%= "<#{@user.try(:email)}>" %></span>
+                                </td>
+                                <% if @user.client? %>
+                                    <td class="">
+                                        <%= @user.trainer.try(:full_name)  %><span class="email-span"><%= "<#{@user.trainer.try(:email)}>" %></span>
+                                    </td>
+                                <%end%>
+                                <td class="">
+                                  <%= @user.user_type %>
+                                </td>
+                                <td class="">
+                                  <%= (sprintf("$%2.2f",  payment.try(:amount)) %>
+                                </td>
+                                <td class="">
+                                    <%= payment.plan.present? ? payment.plan : (payment.amount == 0.99e2 ? "Monthly" : "Yearly") %>
+                                </td>
+                                <% if @user.client? %>
+                                    <td class="">
+                                        <%= payment.try(:session_count) %>
+                                    </td>
+                                <%end%>
+                                <td class="">
+                                    <%= payment.try(:created_at).strftime('%m/%d/%Y') %>
+                                </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+                  
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>

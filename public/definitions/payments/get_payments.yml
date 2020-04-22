@@ -1,0 +1,12 @@
+title: PaymentHistory
+type: object
+required:
+  - payer
+  - payment_id
+properties:
+  payment_id:
+    type: integer
+    format: int64
+  payer:
+    type: string
+    desciption: Payer Name upto 50 chars

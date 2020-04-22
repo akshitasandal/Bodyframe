@@ -1,0 +1,209 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+                  Notifications
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/admin_payouts">Users / Notification </a>
+                  </li>
+               </ol>
+            </div>
+         </header>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">From User</th>
+                              <th class="custom-width">To User</th>
+                              <th class="">Notification Type</th>
+                              <th class="">Notification Text</th>
+                              <th class="">Task</th>
+                              <th class="">Notification Time</th>
+                              <th class="">Payload</th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                        <% @notifications= Notification.all.order('created_at desc').page(params[:page]).per(15) %>
+                          <% @notifications.each do|notification| %>
+                            <tr>
+                                <td class="">
+                                  <%= notification.id %>
+                                </td>
+                                <td class="custom-width">
+                                  <%= notification.user.try(:full_name) %><span class="email-span"><%= "<#{notification.user.try(:email)}>" %></span>
+                                </td>
+                                <td class="custom-width">
+                                  <%= link_to("/admin/users/#{notification.user_id}", html_options = {}) do %>
+                                    <%= notification.to_user.try(:full_name) %><span class="email-span"><%= "<#{notification.to_user.try(:email)}>" %></span>
+                                  <%end%>
+                                </td>
+                                <td class="">
+                                  <%= notification.notification_type %>
+                                </td>
+                                <td class="">
+                                  <%= format(notification.notification_text, trainer_name: notification.user.try(:full_name), client_name: '', task_name: notification.meal_id.present? ? notification.try(:meal).try(:title) : (notification.workout_id.present? ? notification.try(:workout).try(:title) : ''), option: notification.user.try(:objective), new_weight: notification.user.try(:weight), n: notification.to_user && notification.to_user.clients.present? ? notification.to_user.clients.where(created_at: Date.today).count : '', day: notification.meal_id.present? && notification.meal.present? ? notification.meal.meal_time.strftime('%m/%d/%Y') : (notification.workout_id.present? && notification.workout.present? ? notification.workout.date.strftime('%m/%d/%Y') : '')) %>
+                                </td>
+                                <td class="">
+                                  <% if notification.meal_id.present? %>
+                                    <%= link_to notification.meal.title, '/admin/meals/#{notification.meal_id}' %>
+                                  <% elsif notification.workout_id.present? %>
+                                    <%= link_to notification.workout.title, '/admin/workouts/#{notification.workout_id}' %>
+                                  <% else %>
+                                    No task
+                                  <% end %>
+                                </td>
+                                <td class="">
+                                  <%= notification.created_at + Time.zone_offset('EST') %>
+                                </td>
+                                <%  options = {
+                                  "data": {
+                                    "meal_id": notification.try(:meal_id),
+                                    "workout_id": notification.try(:workout_id),
+                                    "from_user": notification.try(:user).try(:full_name),
+                                    "to_user": notification.try(:to_user).try(:full_name),
+                                    "notification_type": notification.notification_type,
+                                    "notification_text": format(notification.notification_text, trainer_name: notification.user.try(:full_name), client_name: '', task_name: notification.meal_id.present? ? notification.try(:meal).try(:title) : (notification.workout_id.present? ? notification.try(:workout).try(:title) : ''), option: notification.user.try(:objective), new_weight: notification.user.try(:weight), n: notification.to_user && notification.to_user.clients.present? ? notification.to_user.clients.where(created_at: Date.today).count : '', day: notification.meal_id.present? && notification.meal.present? ? notification.meal.meal_time.strftime('%m/%d/%Y') : (notification.workout_id.present? && notification.workout.present? ? notification.workout.date.strftime('%m/%d/%Y') : '')),
+                                    "client_id": notification.to_user.present? && !notification.to_user.trainer? ? notification.to_user_id : notification.user_id
+                                  },
+                                  "notification": {
+                                    # "title": "#{notification.user.full_name.capitalize()}",
+                                    "body": "#{format(notification.notification_text, trainer_name: notification.user.try(:full_name), client_name: '', task_name: notification.meal_id.present? ? notification.try(:meal).try(:title) : (notification.workout_id.present? ? notification.try(:workout).try(:title) : ''), option: notification.user.try(:objective), new_weight: notification.user.try(:weight), n: notification.to_user && notification.to_user.clients.present? ? notification.to_user.clients.where(created_at: Date.today).count : '', day: notification.meal_id.present? && notification.meal.present? ? notification.meal.meal_time.strftime('%m/%d/%Y') : (notification.workout_id.present? && notification.workout.present? ? notification.workout.date.strftime('%m/%d/%Y') : ''))}",
+                                    "sound": "default",
+                                    "badge": 0,
+                                  },
+                                  "android":{
+                                    "priority": "high"
+                                  },
+                                  "priority": 10,
+                                  "apns":{
+                                    "headers":{
+                                      "apns-priority": "10"
+                                    }
+                                  },
+                                  "webpush": {
+                                    "headers": {
+                                      "Urgency": "high"
+                                    }
+                                  }
+                                } %>
+                                <td class="payload-td">
+                                <div class="popup"><i class="fas fa-eye">
+                                  <span class="popuptext" id="myPopup-<%=notification.id%>"><%= options %></span>
+                                  </i>
+                                </div>
+                                </td>
+                            </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+                  <footer class="main-content-footer">
+                    <nav class="pagination-container">
+                      <p><%= page_entries_info(collection, entry_name: (entry_name if local_assigns.has_key?(:entry_name))) %>
+                      
+                      <%= paginate(collection, theme: "trestle") %>
+                    </nav>
+                  </footer>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
+
+<script>
+$(".popup").click(function(){
+  var id = event.currentTarget.getElementsByClassName("popuptext")[0].getAttribute("id");
+  var popup = document.getElementById(id);
+  popup.classList.toggle("show");
+})
+</script>
+
+<style>
+.trestle-table td .email-span {
+  display: block;
+  font-size: 12px;
+  line-height: 10px;
+  color: #4d6bb2;
+  display: inline-block;
+  word-break: break-all;
+}
+.custom-width {
+  width: 180px !important;
+  max-width: 180px !important;
+}
+
+.table-container {
+  overflow: visible;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  height: auto;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 3px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 0;
+  left: 0;
+  margin-left: -202px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>

@@ -1,0 +1,66 @@
+<aside class="app-sidebar navbar-expand-md" id="app-sidebar">
+  <header class="app-sidebar-header">
+    <button class="navbar-toggler" type="button" aria-controls="app-sidebar" aria-expanded="false" aria-label="<%= t("trestle.ui.toggle_navigation", default: "Toggle navigation") %>">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <%= link_to Trestle.config.root, class: "app-sidebar-title" do %>
+      <%= hook("view.title") { render "trestle/shared/title" } %>
+    <% end %>
+  </header>
+
+  <div class="app-sidebar-inner">
+    <nav class="app-nav">
+      <% collapsed = cookies["trestle:navigation:collapsed"].try(:split, ",") || [] %>
+      <% Trestle.navigation(self).each do |group, items| %>
+        <ul<% if group.present? && collapsed.include?(group.id) %> class="collapsed"<% end %>>
+          <% if group.present? %>
+            <li class="nav-header"><%= link_to group.label, "##{group.id}" %></li>
+          <% end %>
+
+          <% items.each do |item| %>
+            <li<% if current_navigation_item?(item) %> class="active"<% end %>>
+              <%= link_to item.path do %>
+                <%= icon("nav-icon", item.icon) %>
+                <span class="nav-label"><%= item.label %></span>
+
+                <%= content_tag(:span, item.badge.text, class: ["badge", item.badge.html_class]) if item.badge? %>
+              <% end %>
+            </li>
+          <% end %>
+          <div class="accordion" id="accordionExample">
+            <div class="card">
+            <div class="card-header" id="headingOne">
+              <h2 class="mb-0">
+              <span>
+              <i class="nav-icon fa fa-file"></i>
+                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  Reports
+                </button>
+                </span>
+              </h2>
+            </div>
+            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+              <div class="card-body">
+                <span>
+                  <i class="nav-icon fa fa-users"></i>
+                  <%= link_to "New Trainer Sign Ups", "/admin/reports" %>
+                </span>
+              </div>
+              <div class="card-body">
+                <span>
+                  <i class="nav-icon fa fa-users"></i>
+                  <%= link_to "All Members", "/admin/all_members" %>
+                </span>
+              </div>
+            </div>
+          </div>
+        </ul>
+      <% end %>
+    </nav>
+
+    <button class="toggle-sidebar">
+      <span class="sr-only"><%= t("trestle.ui.toggle_sidebar", default: "Toggle sidebar") %></span>
+    </button>
+  </div>
+</aside>

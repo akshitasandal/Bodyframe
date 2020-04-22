@@ -1,0 +1,12 @@
+title: SupportTicket
+type: object
+required:
+  - user_id
+  - ticket_information
+properties:
+  user_id:
+    type: integer
+    format: int64
+  ticket_information:
+    type: string
+    description: Ticket Information

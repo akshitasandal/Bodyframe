@@ -1,0 +1,12 @@
+title: Notification
+type: object
+required:
+  - user_id
+  - notification
+properties:
+  user_id:
+    type: integer
+    format: int64
+  notification:
+    type: string
+    example: Test Activity Type

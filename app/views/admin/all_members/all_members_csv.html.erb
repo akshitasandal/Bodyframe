@@ -1,0 +1,109 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+        
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Id</th>
+                              <th class="custom-width">Full Name</th>
+                              <th class="custom-width">User Type</th>
+                              <th class="">Amount Paid</th>
+                              <th class="custom-width">Refferal Commission</th>
+                              <th class="">Last Payment Date</th>
+                              <% if params[:type]!="client"%>
+                                <th class="">Membership Expiration Date</th>
+                              <%end%>
+                        </thead>
+                        <tbody>
+                        <% @users = @users.page(params[:page]).per(15) %>
+                          <% @users.each do|user| %>
+                              <tr data-link="all_members/payment_history?user_id=<%=user.id %>" >
+                                  <td class="">
+                                    <%= user.id %>
+                                  </td>
+                                  <td class="custom-width">
+                                      <%= user.try(:full_name) %><span class="email-span"><%= "<#{user.try(:email)}>" %></span>
+                                  </td>
+                                  <td class="">
+                                    <%= user.user_type %>
+                                  </td>
+                                  <td class="">
+                                    <%= user.trainer? ? sprintf("$%2.2f", PaymentHistory.where(user_id: user.id, client_id: nil).sum(:amount)) : ('%.2f' % PaymentHistory.where(client_id: user.id).sum(:amount)) %>
+                                  </td>
+                                  <td class="">
+                                        <%= sprintf("$%2.2f", user.payment_histories.sum(:reward_total)) %>
+                                    </td>
+                                  <td class="">
+                                      <% date = user.trainer? ? user.payment_histories.where(client_id: nil).last.try(:created_at) : PaymentHistory.where(client_id: user.id).last.try(:created_at)%>
+                                      <%= date.present? ? date.strftime('%m/%d/%Y') : "-" %>
+                                  </td>
+                                  <% if params[:type]!="client"%>
+                                    <td class="">
+                                        <% payment = user.payment_histories.last %>
+                                        <%if user.trainer? %>
+                                          <%= payment.present? && payment.amount == 0.997e3 ? (payment.try(:created_at) + 1.year).strftime('%m/%d/%Y') : ( payment.present? && payment.amount == 0.99e2 ? (payment.created_at + 1.month).strftime('%m/%d/%Y') : (user.created_at + 14.days).strftime('%m/%d/%Y'))  %>
+                                        <%else%>
+                                          <%= payment.present? && payment.amount != per_session ? (payment.try(:created_at) + 1.month).strftime('%m/%d/%Y') : '' %>
+                                        <%end%>
+                                    </td>
+                                  <%end%>
+                              </tr>
+                          <% end %>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
+
+
+<body>
+   <div class="app-wrapper">
+      <div class="app-container">
+         <main class="app-main" data-context="/admin/revenue_reporting">
+            <div class="main-content-area">
+               <div class="main-content-container">
+                  <div class="main-content">
+                     <div class="table-container">
+                        <table class="trestle-table">
+                           <thead>
+                              <tr>
+                                 <th class="">Email</th>
+                                 <th class="">Full name</a></th>
+                                 <th class="">Objective</a></th>
+                                 <th class="">Phone</a></th>
+                                 <th class="">User type</a></th>
+                                 <th class="text-center">Created at</a></th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                                <% @users.each do|user|%>
+                                    <tr data-url="/admin/revenue_reporting/43">
+                                        <td class=""><%= user.email %></td>
+                                        <td class=""><%= user.full_name %></td>
+                                        <td class=""><%= user.objective %></td>
+                                        <td class=""><%= user.phone %></td>
+                                        <td class=""><%= user.user_type %></td>
+                                        <td class="text-center"><%= user.created_at %></td>
+                                    </tr>
+                                <%end%>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </main>
+      </div>
+   </div>
+</body>

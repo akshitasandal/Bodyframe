@@ -1,0 +1,14 @@
+title: User
+type: object
+required:
+  - user_id
+properties:
+  user_id:
+    type: integer
+    format: int64
+  email:
+    type: string
+    description: User email (IF user_id and email is present email will be updated)
+  password:
+    type: string
+    description: User Password (IF user_id and password is present password will be updated)

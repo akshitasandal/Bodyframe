@@ -1,0 +1,56 @@
+<div class="app-wrapper">
+   <div class="app-container">
+      <main class="app-main" data-context="/admin/admin_payouts">
+         <header class="content-header">
+            <div class="content-header-title">
+               <h1>
+               Trainer Information
+               </h1>
+               <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                     <a href="/admin">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">
+                     <a href="/admin/admin_payouts">Admin Payouts / Trainer Information</a>
+                  </li>
+               </ol>
+            </div>
+         </header>
+         <div class="main-content-area">
+            <div class="main-content-container">
+               <div class="main-content">
+                  <header class="main-content-header">
+                  </header>
+                  <div class="table-container">
+                     <table class="trestle-table">
+                        <thead>
+                           <tr>
+                              <th class="">Email</th>
+                              <th class="">Full name</th>
+                              <th class="">Phone</th>
+                              <th class="">Client Refferal</th>
+                              <th class="">Trainer Refferal</th>
+                              <th class="">Current Plan</th>
+                              <th class="">Next Payable Date</th>
+                              # <th class="actions"></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td class=""><%= @trainer.email %></td>
+                              <td class=""><%= @trainer.full_name %></td>
+                              <td class=""><%= @trainer.phone %></td>
+                              <td class=""><%= @trainer.referral_code %></td>
+                              <td class=""><%= @trainer.trainer_coupon_code %></td>
+                              <td class=""><%= @trainer.payment_histories.where(client_id: nil).last.try(:amount) == 0.997e3 ? "Yearly" : "Monthly" %></td>
+                              <td class=""><%= @trainer.payment_histories.where(client_id: nil).last.try(:amount) == 0.997e3 ? (@trainer.created_at + 1.year).strftime('%m/%d/%Y') : (@trainer.created_at + 1.month).strftime('%m/%d/%Y') %></td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </main>
+   </div>
+</div>
